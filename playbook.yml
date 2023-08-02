@@ -1,0 +1,8 @@
+---
+- name: Install and update packages
+  hosts: officemag01
+  gather_facts: false
+  remote_user: vagrant
+  become: true
+  roles:
+    - update

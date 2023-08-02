@@ -1,0 +1,48 @@
+---
+- name: INSTALL | Requested packages
+  apt: 
+    name: [wget,vim,htop,tmux,apache2,python3,php7.2,nginx,software-properties-common,apt-transport-https,libapache2-mod-php]
+    state: present
+    update_cache: true
+- name: UPGRADE
+  apt:
+    upgrade: dist
+- name: INSTALL | PHP package
+  apt:
+    name: 
+      - php7.2-cli
+      - php7.2-curl
+      - php7.2-fpm
+      - php7.2-intl
+      - php7.2-mysql    
+    state: present
+- name: ADD| Repository PHP7.2
+  apt_repository:
+    repo: "ppa:ondrej/php"
+- name: UPDATE | PHP repository
+  apt:
+    update_cache: true
+- name: INSTALL | PHP7.2
+  apt: 
+    name: php7.2 
+    state: present
+- name: REPLACE | Start page web
+  template:
+    src: "{{ apache_temp }}/index.j2"
+    dest: "{{ www }}/index.html"
+    mode: "0644"
+- name: REPLACE | Apache2 ports config
+  template:         
+    src: "{{ apache_temp }}/apache_port.j2"
+    dest: "{{ apache_conf }}/ports.conf"
+    mode: "0644"
+- name: REPLACE | Apache2 default
+  template:
+    src: "{{ apache_temp }}/000-default.j2"
+    dest: "{{ apache_site }}/000-default.conf"
+    mode: "0644"
+  notify: 
+    - apache_restart
+    - nginx_restart
+
+  

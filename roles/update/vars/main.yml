@@ -1,0 +1,6 @@
+---
+apache_temp: /home/ubuntu/office/roles/update/templates
+apache_site: /etc/apache2/sites-available
+apache_conf: /etc/apache2
+www: /var/www/html
+apache_port: "8888"

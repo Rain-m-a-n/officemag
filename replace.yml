@@ -1,0 +1,43 @@
+---
+- name: REPLACE | PHP7.2 on PHP7.4
+  hosts: officemag01
+  gather_facts: false
+  become: true
+  remote_user: vagrant
+  pre_tasks:
+    - name: ADD| Repository PHP7.2
+      apt_repository:
+        repo: "ppa:ondrej/php"
+    - name: UPDATE | PHP repository
+      apt:
+        update_cache: true
+
+  tasks:
+    - name: UNINSTALL | PHP7.2
+      apt:
+        name: php7.2
+        state: absent
+        purge: yes
+    - name: UNINSTALL | PHP package
+      apt:
+        name: 
+          - php7.2-cli
+          - php7.2-curl
+          - php7.2-fpm
+          - php7.2-intl
+          - php7.2-mysql    
+        state: absent
+        purge: yes
+    - name: INSTALL | PHP7.4
+      apt: 
+        name: php7.4
+        state: present
+    - name: INSTALL | PHP package
+      apt:
+        name: 
+          - php7.4-cli
+          - php7.4-curl
+          - php7.4-fpm
+          - php7.4-intl
+          - php7.4-mysql    
+        state: present
